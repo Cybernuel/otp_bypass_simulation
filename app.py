@@ -5,7 +5,7 @@ app = Flask(__name__)
 app.secret_key = "supersecretkey"
 
 
-# Login route
+
 @app.route("/", methods=["GET", "POST"])
 @app.route("/signup", methods=["GET", "POST"])
 def login():
@@ -14,7 +14,7 @@ def login():
         password = request.form.get("password")
 
         if username and password:
-            # Generate 4-digit OTP
+          
             otp = str(random.randint(1000, 9999))
             session["otp"] = otp
             session["username"] = username
@@ -60,3 +60,4 @@ def success():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
