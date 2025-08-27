@@ -163,11 +163,12 @@
       const text = await response.text();
 
       if (text.trim() === "1") {
-        window.location.href = "/success";  // ✅ OTP correct → redirect
+        window.location.href = "/success"; 
       } else {
-        errorBox.textContent = "Invalid OTP";  // ❌ OTP wrong → show error
+        errorBox.textContent = "Invalid OTP"; 
       }
     });
   </script>
 </body>
 </html>
+
