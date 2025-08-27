@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify OTP</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+    }
+
+    .container {
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+      padding: 20px;
+      position: relative;
+    }
+
+    h2 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #fff;
+    }
+
+    .step {
+      color: #bbb;
+      margin-bottom: 20px;
+    }
+
+    .otp-text {
+      color: #00ff6a;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    .otp-text span {
+      font-weight: bold;
+      color: #00ff6a;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #444;
+      background: #111;
+      color: #fff;
+      border-radius: 4px;
+      font-size: 14px;
+      outline: none;
+      margin-bottom: 10px;
+    }
+
+    input[type="text"]:focus {
+      border-color: #00ff6a;
+    }
+
+    .resend {
+      color: red;
+      font-size: 13px;
+      float: right;
+      margin-top: -5px;
+      margin-bottom: 20px;
+      cursor: pointer;
+    }
+
+    .back-link {
+      display: block;
+      margin-bottom: 20px;
+      color: #00aaff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      color: #fff;
+      background: linear-gradient(to right, #00b050, #28a745);
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      opacity: 0.85;
+    }
+
+    .error {
+      color: red;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .bg-shape {
+      position: absolute;
+      top: 10%;
+      left: 2%;
+      width: 80px;
+      opacity: 0.1;
+      filter: invert(1);
+    }
+
+    .bg-shape.right {
+      bottom: 10%;
+      right: 2%;
+      top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Shapes -->
+  <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/TriangleArrowRight.svg" class="bg-shape" alt="shape">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/TriangleArrowRight.svg" class="bg-shape right" alt="shape">
+
+  <div class="container">
+    <h2>Verify OTP</h2>
+    <div class="step">2/3</div>
+
+    <a href="#" class="back-link">Go Back</a>
+
+    <div class="otp-text">
+      OTP sent to <span>YOU</span>
+    </div>
+
+    <form id="otpForm">
+      <input type="text" name="otp" id="otp" placeholder="Enter Email OTP" required>
+      <button type="submit">Verify</button>
+    </form>
+
+    <p class="error" id="error"></p>
+  </div>
+
+  <script>
+    const form = document.getElementById("otpForm");
+    const errorBox = document.getElementById("error");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const otpValue = document.getElementById("otp").value;
+
+      const response = await fetch("/otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "otp=" + encodeURIComponent(otpValue)
+      });
+
+      const text = await response.text();
+
+      if (text.trim() === "1") {
+        window.location.href = "/success";  // ✅ OTP correct → redirect
+      } else {
+        errorBox.textContent = "Invalid OTP";  // ❌ OTP wrong → show error
+      }
+    });
+  </script>
+</body>
+</html>
